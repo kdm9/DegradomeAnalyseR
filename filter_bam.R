@@ -20,7 +20,7 @@ bam <- bam[bam[,3]>=20,]
 
 ## Write filtered bam to CSV
 csv_filename <- paste(args[2], "filtered.csv", sep="_")
-write.csv(bam.counts, file=csv_filename)
+write.csv(bam, file=csv_filename)
 
 
 ### EXPORT BAM TARGETS
