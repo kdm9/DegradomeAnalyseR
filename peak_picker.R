@@ -1,35 +1,53 @@
-﻿# this file should be source()-able to import this function
+# this file should be source()-able to import this function
+library(caTools)
 
-km.peak.pick <- function (data){
-	#get runmean, runsd
-	#then, as per old script:
-	# wt_mean <- (s1 + s2)/2
-	# wt_kmean <- runmean(wt_mean,5)
-	# wt_ksd = 5 * runsd(wt_mean,5) # 3-sigma should be good enough
-	# wt_upper <- wt_kmean + wt_ksd
-	# wt_lower <- wt_kmean - wt_ksd
-	# plot(wt_samples[,1:2], pch="+", main="Wt")
-	# lines(0:99,wt_mean)
-	# lines(0:99,wt_kmean, col="red")
-	# lines(0:99,wt_upper, col="red", lty=2)
-	# lines(0:99,wt_lower, col="red", lty=3)
-	# points(wt_samples[wt_samples[,2] > wt_upper & wt_samples[,3]==3,1:2])
-	# removed <- as.vector(as.numeric(row.names(wt_samples[wt_samples[,2] > wt_upper,1:2])))
-	# ovral[removed,2] = NA
-	# wt_samples <- ovral[ovral[,3]==3 | ovral[,3]==4,]
-	# plot(wt_samples[,1:2], pch="+", type="o", main="Wt")
-	# lines(lowess(wt_samples[,1:2], na.rm=True))
-	# s1 <- ovral[ovral[,3]==3,2]
-	# s2 <- ovral[ovral[,3]==4,2]
-	# wt_mean <- data.frame(s1=s1, s2=s2)
-	# wt_mean[,3] <- rowMeans(wt_mean, na.rm=TRUE)
-	# plot(wt_mean[,3])
-	# 
-	# points(wt_samples[wt_samples[,2] > wt_upper & wt_samples[,3]==4,1:2])
-	# ovral[ovral[ovral[,2] > wt_upper & ovral[,3]==3,1] & ovral[,3]==3,]
-	# #wt_upper[wt_samples[wt_samples[,2] > wt_upper & wt_samples[,3]==3,1]]
-	# 
-	# ein5_samples = ovral[ovral[,3]==1 | ovral[,3]==2,1:2]
-	# plot(ein5_samples, pch="+", main="ein5")
+# data = c(1,32,33,4,3,4,3,42,2,3,4,34,34344,2,3,4,32,4,3,4,4,4,43,343,2,3,8,98,8,7,3)
+# plot (data)#,ylim=c(-50000,50000))
+# lines(1:length(data), kmean)
+# lines(1:length(data), upper)
+# lines(1:length(data), lower)
+# points(data_nopeaks, pch="+")
+# data <- data_nopeaks
+# data[data == max(data)] = NA 
+# plot(1:length(data),km.runsd(data))
+# plot(1:length(data),runsd(data,5))
 
+km.runsd <- function(data){
+  data.runsd <- numeric(length=length(data))
+  for (i in 1:length(data)){
+    data.na <- data
+    data.na[i] = NA
+    data.na.runsd <- runsd(data.na,5)
+    data.runsd[i] = data.na.runsd[i]
+  }
+  return(data.runsd)
 }
+peak.pick <- function(data){
+  kmean <- runmean(data,15)
+  ksd = 1 * sd(data)
+  upper <- kmean + ksd
+  lower <- kmean - ksd
+  peaks <- (upper < data) | (data < lower)
+  return(peaks)
+}
+peak.convert <- function (data){
+  peaks <- peak.pick(data)  
+  data_nopeaks <- data
+  data[peaks] = NA
+  kmean <- runmean(data,15)
+  data_nopeaks[peaks] = kmean[peaks]
+  return(data_nopeaks)
+}
+peaks.only <- function (data){
+  peaks <- peak.pick(data)
+  data_peaks <- data
+  data_peaks[!peaks] = NA
+  return(data_peaks)
+}
+
+# plot(1:length(data), data)
+# peak.pick(data)
+# plot(1:length(data), peak.convert(data))
+# peak.convert(data)
+# plot(1:length(data), peaks.only(data))
+# peaks.only(data)
