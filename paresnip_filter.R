@@ -51,11 +51,7 @@ cross.validate <- function (params){
       )
 
     data.summarised <- data.summarised[with(data.summarised, order(Key)), ]
-    print("b4names")
-    print(names(data.summarised))
-    print("names")
-    print(paste(names(data.summarised), param[2], counter))
-    names(data.summarised) <- paste(names(data.summarised), param[2], counter)
+    names(data.summarised) <- paste(names(data.summarised), counter)
     summed.data <- c(summed.data, data.summarised)
     print(length(summed.data))
 
