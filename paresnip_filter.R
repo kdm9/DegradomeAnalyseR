@@ -1,5 +1,5 @@
 library(plyr)
-# setwd("/home/kevin/UniWork/Pogson Lab/Degradome/PetePARE/PARESnipResults")
+# setwd("/home/kevin/UniWork/Pogson Lab/Degradome/PetePARE/paresnip_results")
 
 p.list <- list(
     list(
@@ -18,6 +18,12 @@ p.list <- list(
         c("paresnip_9.tab","alx8")
         )
     )
+params = list(
+      c("paresnip_1.tab","WT"),
+      c("paresnip_2.tab","WT"),
+      c("paresnip_3.tab","WT")
+    )
+
 
 cross.validate <- function (params){
   counter = 0
@@ -35,7 +41,6 @@ cross.validate <- function (params){
       summarize,
       FA=max(Fragment.Abundance),
       SRA=max(Short.Read.Abundance),
-#       Duplex=Duplex[1] # BAD HACK
       Duplex=names(which.max(table(as.character(Duplex)))) #most common Duplex
     )
 
@@ -64,34 +69,22 @@ cross.validate <- function (params){
       next
     }
     data <- data.frame(
-        summed.data[(length(replicated.data)-(cols-1)):length(replicated.data)]
+        summed.data[seq((iii*cols)-(cols-1),(iii*cols))]
         )
-#     print("b4data")
-#     print(names(data))
-#     print(dim(data))
-#     print("b4repdata")
-#     print(names(replicated.data))
-#     print(dim(replicated.data))
-
+    
     a = as.character(replicated.data[,length(replicated.data)])
     b = as.character(data$Key)
     matches <- match(a, b)
     matches <- matches[!is.na(matches)]
     data <- data[matches,]
-#     print("data")
-#     print(names(data))
-#     print(dim(data))
 
     a = as.character(replicated.data[,length(replicated.data) ])
     b = as.character(data$Key)
     matches <- match(b, a)
     matches <- matches[!is.na(matches)]
     replicated.data <- replicated.data[matches,]
-#     print("repdata")
-#     print(names(replicated.data))
-#     print(dim(replicated.data))
-    replicated.data <- data.frame(replicated.data, data)
 
+    replicated.data <- data.frame(replicated.data, data)
   }
   return(replicated.data)
 }
