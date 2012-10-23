@@ -1,6 +1,4 @@
 args <- commandArgs(trailingOnly=T)
-args[1] = "alx8_conserved.tab"
-args[2] = "alx8"
 
 paresnip.filtered <- read.delim(args[1], header=T, sep='\t', quote="\"")
 SRA.FA.cols <- grep("^SRA|FA",names(paresnip.filtered))
