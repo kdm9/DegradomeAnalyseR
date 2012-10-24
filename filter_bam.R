@@ -8,7 +8,10 @@ args <- commandArgs(trailingOnly=T)
 #pos:	ref. mapping position
 #mapq:	mapping quality score
 #cigar:	CIGAR indel string
-bam <- scanBam(args[1], param=ScanBamParam(what=c("rname","pos", "mapq", "cigar")))
+bam <- scanBam(
+    args[1], 
+    param=ScanBamParam(what=c("rname","pos", "mapq", "cigar"))
+    )
 bam <- data.frame(bam)
 
 ## Filter data
