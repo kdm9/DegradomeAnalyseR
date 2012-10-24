@@ -26,6 +26,15 @@ foreach(agi=agis) %dopar% {
     agi$value$pos <- agi$value$pos / seq.len
     overall.hist <- merge(overall.hist, data.frame(agi$value)[,2:5],all=T)
     write.csv(overall.hist, file=paste(args[3],"_normalised.csv", sep=""))
+    pdf(paste(args[3], "/" , agi$key[[1]], "indiv_plot.pdf", sep="_"))
+    plot(
+        agi$value$pos,
+        agi$value$count,
+        ylab="Absolute Counts",
+        xlab="Normalised Gene Coordinate (pos/len)",
+        main=agi$key[[1]]
+        )
+    dev.off()
 }
 pdf(paste(args[3],"_overall.pdf", sep=""))
 plot(overall.hist$pos, overall.hist$count)
