@@ -1,29 +1,6 @@
 library(plyr)
-# setwd("/home/kevin/UniWork/Pogson Lab/Degradome/PetePARE/paresnip_results")
-
-p.list <- list(
-    list(
-        c("paresnip_1.tab","WT"),
-        c("paresnip_2.tab","WT"),
-        c("paresnip_3.tab","WT")
-        ),
-    list(
-        c("paresnip_4.tab","xrn4"),
-        c("paresnip_5.tab","xrn4"),
-        c("paresnip_6.tab","xrn4")
-        ),
-    list(
-        c("paresnip_7.tab","alx8"),
-        c("paresnip_8.tab","alx8"),
-        c("paresnip_9.tab","alx8")
-        )
-    )
-params = list(
-      c("paresnip_1.tab","WT"),
-      c("paresnip_2.tab","WT"),
-      c("paresnip_3.tab","WT")
-    )
-
+args <- commandArgs(trailingOnly=T)
+# args should be the name of each file, followed by the genotype of the files
 
 cross.validate <- function (params){
   counter = 0
@@ -31,7 +8,7 @@ cross.validate <- function (params){
   replicated.data = list()
   for (param in params){
     counter = counter + 1
-    data <- read.delim(param[1],header=T, quote = '"', sep='\t')
+    data <- read.delim(param[[1]],header=T, quote = '"', sep='\t')
     agi.list <- unlist(strsplit(as.character(data$Gene), "|", fixed=T))
     data$AGI <- matrix(agi.list[grep("^AT.G", agi.list)])
 
@@ -85,18 +62,19 @@ cross.validate <- function (params){
   return(replicated.data)
 }
 
-
-for (set in p.list){
-    fn = paste(set[[1]][2], "conserved.tab", sep="_")
-    print(fn)
-    conserved <- data.frame(cross.validate(set))
-
-    write.table(
-        conserved,
-        file=fn,
-        sep="\t",
-        col.names=T,
-        row.names=T,
-        qmethod = "double"
-        )
+file.list <- list()
+for (file in args[seq(1,(length(args)-1))]){
+  file.tuple <- list(file,args[length(args)])
+  file.list <- c(file.list, list(file.tuple))
 }
+
+fn = paste(args[length(args)], "conserved.tab", sep="_")
+conserved <- data.frame(cross.validate(file.list))
+write.table(
+  conserved,
+  file=fn,
+  sep="\t",
+  col.names=T,
+  row.names=T,
+  qmethod = "double"
+)
