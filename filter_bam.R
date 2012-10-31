@@ -19,7 +19,7 @@ bam <- data.frame(bam)
 bam <- bam[!is.na(bam[,1]),]
 bam <- bam[!is.na(bam[,2]),]
 #Remove rows with mapq < 20
-bam <- bam[bam[,3]>=20,]
+# bam <- bam[bam[,3]>=20,]
 
 ## Write filtered bam to CSV
 csv_filename <- paste(args[2], "filtered.csv", sep="_")
