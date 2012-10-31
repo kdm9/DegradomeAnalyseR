@@ -2,8 +2,19 @@ README:
 
 file path:
 
-sanitise_paresnip.py
-paresnip_filter.R
-paresnip_summarise.R
-paresnip_correlate_FA_SRA.R                 paresnip_pick_peaks.R
-                                            paresnip_downstream_bias.R
+Overall paresnip:
+  RNAseq + Paresnip happen independently
+  paresnip_downstream_bias.R
+
+Paresnip results:
+  sanitise_paresnip.py
+  paresnip_filter.R
+  paresnip_summarise.R
+    paresnip_correlate_FA_SRA.R                 
+
+RNAseq:
+  bwa mapping qjob
+  samtools view -bS 
+  filter_bam.R
+
+
