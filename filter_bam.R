@@ -17,7 +17,7 @@ bam <- data.frame(bam)
 bam <- bam[!is.na(bam[,1]),]
 bam <- bam[!is.na(bam[,2]),]
 #Remove rows with mapq < 20
-bam <- bam[bam[,3]>=20,]
+# bam <- bam[bam[,3]>=20,]
 
 ## Summarise data to count table
 bam.counts <- ddply(bam, .(rname, pos), summarise, count=length(rname), m_mapq=mean(mapq))
