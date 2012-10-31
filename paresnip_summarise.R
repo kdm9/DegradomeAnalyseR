@@ -19,7 +19,6 @@ names(paresnip.filtered)[1:4] <- gsub(
 
 # remove trailing whitespace from AGIs
 paresnip.filtered$AGI <- gsub("\\s", "", paresnip.filtered$AGI)
-paresnip.summarised$AGI <- gsub("\\s", "", paresnip.summarised$AGI)
 
 
 ### SUMMARISE DATA
