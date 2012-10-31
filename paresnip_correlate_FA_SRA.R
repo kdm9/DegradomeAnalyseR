@@ -1,8 +1,8 @@
 library(rgl)
 args <- commandArgs(trailingOnly=T)
-args[1] = "alx8_summarised.csv"
-args[2] = "header.csv" # AGI Length table (e.g. from filter_bam.R)
-args[3] = "alx8" #output file prefix
+# args[1] = "alx8_summarised.csv"
+# args[2] = "header.csv" # AGI Length table (e.g. from filter_bam.R)
+# args[3] = "alx8" #output file prefix
 
 paresnip.summarised <- read.csv(args[1])
 

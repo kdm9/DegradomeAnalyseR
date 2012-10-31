@@ -1,6 +1,10 @@
 library(plyr)
 args <- commandArgs(trailingOnly=T)
-# args should be the name of each file, followed by the genotype of the files
+#args should be the name of each file, followed by the genotype of the files
+# args[1] = "paresnip_1.tab"
+# args[2] = "paresnip_2.tab"
+# args[3] = "paresnip_2.tab"
+# args[4] = "col0"
 
 cross.validate <- function (params){
   counter = 0
