@@ -9,6 +9,7 @@ args <- commandArgs(trailingOnly=T)
 #args[1] = "deg_1_summarised.csv"
 #args[2] = "deg_1_targets.csv"
 #args[3] = "deg_1"
+
 deg <- read.csv(args[1])
 targets <- read.csv(args[2])
 
