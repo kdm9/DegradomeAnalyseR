@@ -1,6 +1,6 @@
 args <- commandArgs(trailingOnly=T)
-args[1] = "alx8_conserved.tab"
-
+# args[1] = "alx8_conserved.tab"
+# args[2] = "alx8"
 
 ### READ IN DATA
 # Read replicate cross-check filtered PAREsnip output
