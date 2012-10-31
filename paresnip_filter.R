@@ -14,7 +14,7 @@ cross.validate <- function (params){
 
     data.summarised <- ddply(
       data[data$Category<3,],
-      .(AGI, Cleavage.Position, Category),
+      .(AGI, Cleavage.Position), #, Category
       summarize,
       FA=max(Fragment.Abundance),
       SRA=max(Short.Read.Abundance),
@@ -23,8 +23,8 @@ cross.validate <- function (params){
 
     data.summarised$Key <- paste(
       data.summarised$AGI,
-      data.summarised$Cleavage.Position,
-      data.summarised$Category
+      data.summarised$Cleavage.Position
+#       data.summarised$Category
       )
 
     data.summarised <- data.summarised[with(data.summarised, order(Key)), ]
@@ -35,7 +35,7 @@ cross.validate <- function (params){
   }
   print(names(summed.data))
   for (iii in c(1:(counter))){
-    cols = 7
+    cols = 6
     keycol = 7
     if (iii == 1){
       replicated.data <- data.frame(summed.data[1:cols])
