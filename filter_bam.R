@@ -1,5 +1,4 @@
 library(Rsamtools)
-library(plyr)
 args <- commandArgs(trailingOnly=T)
 
 ### EXPORT BAM
@@ -9,7 +8,10 @@ args <- commandArgs(trailingOnly=T)
 #pos:	ref. mapping position
 #mapq:	mapping quality score
 #cigar:	CIGAR indel string
-bam <- scanBam(args[1], param=ScanBamParam(what=c("rname","pos", "mapq", "cigar")))
+bam <- scanBam(
+    args[1], 
+    param=ScanBamParam(what=c("rname","pos", "mapq", "cigar"))
+    )
 bam <- data.frame(bam)
 
 ## Filter data
@@ -19,12 +21,10 @@ bam <- bam[!is.na(bam[,2]),]
 #Remove rows with mapq < 20
 # bam <- bam[bam[,3]>=20,]
 
-## Summarise data to count table
-bam.counts <- ddply(bam, .(rname, pos), summarise, count=length(rname), m_mapq=mean(mapq))
-
 ## Write filtered bam to CSV
 csv_filename <- paste(args[2], "filtered.csv", sep="_")
-write.csv(bam.counts, file=csv_filename)
+write.csv(bam, file=csv_filename)
+
 
 ### EXPORT BAM TARGETS
 ## import header

@@ -1,0 +1,26 @@
+README:
+
+sanitise_paresnip.py <raw_paresnip_output> > <sanitised_file>
+paresnip_filter.R --args <file1> [<file2> <file3> ... <fileN>] <prefix>
+paresnip_summarise.R --args <conserved_peaks_table> <prefix>
+paresnip_downstream_bias.R --args <summarised_peaks_table> <target_length_table> <RNAseq_filtered_file> <prefix>
+filter_bam.R --args <bam_file> <prefix>
+
+file pipeline:
+
+Overall paresnip:
+  RNAseq + Paresnip happen independently
+  paresnip_downstream_bias.R
+
+Paresnip results:
+  sanitise_paresnip.py
+  paresnip_filter.R
+  paresnip_summarise.R
+    paresnip_correlate_FA_SRA.R                 
+  
+RNAseq:
+  bwa mapping qjob
+  samtools view -bS 
+  filter_bam.R
+
+
