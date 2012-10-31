@@ -68,7 +68,7 @@ for (file in args[seq(1,(length(args)-1))]){
   file.list <- c(file.list, list(file.tuple))
 }
 
-fn = paste(args[length(args)], "conserved.tab", sep="_")
+fn = paste(args[length(args)], "conserved.tab", sep=".")
 conserved <- data.frame(cross.validate(file.list))
 write.table(
   conserved,

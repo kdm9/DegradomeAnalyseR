@@ -36,4 +36,4 @@ paresnip.summarised$SRA.sd <- apply(paresnip.summarised[,SRA.cols], 1, sd)
 paresnip.summarised$FA.sd <- apply(paresnip.summarised[,FA.cols], 1, sd)
 
 
-write.csv(paresnip.summarised, paste(args[2], "summarised.csv", sep="_"))
+write.csv(paresnip.summarised, paste(args[2], "summarised.csv", sep="."))

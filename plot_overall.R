@@ -25,8 +25,8 @@ foreach(agi=agis) %dopar% {
     seq.len = targets[targets[,1] == agi$key[[1]], 2]
     agi$value$pos <- agi$value$pos / seq.len
     overall.hist <- merge(overall.hist, data.frame(agi$value)[,2:5],all=T)
-    write.csv(overall.hist, file=paste(args[3],"_normalised.csv", sep=""))
-    pdf(paste(args[3], "/" , agi$key[[1]], "indiv_plot.pdf", sep="_"))
+    write.csv(overall.hist, file=paste(args[3],"normalised.csv", sep="."))
+    pdf(paste(args[3], "/" , agi$key[[1]], "indiv_plot.pdf", sep="."))
     plot(
         agi$value$pos,
         agi$value$count,
@@ -39,17 +39,17 @@ foreach(agi=agis) %dopar% {
 pdf(paste(args[3],"_overall.pdf", sep=""))
 plot(overall.hist$pos, overall.hist$count)
 dev.off()
-write.csv(overall.hist, file=paste(args[3],"_normalised.csv", sep=""))
+write.csv(overall.hist, file=paste(args[3],"normalised.csv", sep="."))
 
 overall.peaks <- overall.hist
 overall.peaks[with(overall.peaks, order(pos)), ]
 
 peaks <- peak.pick(overall.peaks$count)
-write.csv(peaks, file=paste(args[3],"_peaks.csv", sep=""))
+write.csv(peaks, file=paste(args[3],"peaks.csv", sep="."))
 
 overall.peaks$count <- peak.convert(overall.peaks$count)
 
 sd(overall.hist$count)
 
-write.csv(overall.peaks, file=paste(args[3],"_converted.csv", sep=""))
+write.csv(overall.peaks, file=paste(args[3],"converted.csv", sep="."))
 

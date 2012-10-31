@@ -6,7 +6,7 @@ args[3] = "alx8" #output file prefix
 
 paresnip.summarised <- read.csv(args[1])
 
-pdf(paste(args[3], "corelations.pdf", sep="_"))
+pdf(paste(args[3], "corelations.pdf", sep="."))
 
 ### FA vs SRA relationship (there is none)
 plot(paresnip.summarised$FA.mean, paresnip.summarised$SRA.mean, main="SRA vs FA")
