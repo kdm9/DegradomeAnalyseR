@@ -4,10 +4,10 @@ library(foreach)
 library(iterators)
 
 args <- commandArgs(trailingOnly=T)
-args[1] = "col0.summarised.csv"
-args[2] = "tx_tair10rep.targets.csv"
-args[3] = "rnaseq_1.filtered.csv"
-args[4] = "col0"
+# args[1] = "col0.summarised.csv"
+# args[2] = "tx_tair10rep.targets.csv"
+# args[3] = "rnaseq_1.filtered.csv"
+# args[4] = "col0"
 
 ### READ DATA
 agi.peaks.raw <- read.csv(args[1])
