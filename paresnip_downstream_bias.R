@@ -4,19 +4,22 @@ library(foreach)
 library(iterators)
 
 args <- commandArgs(trailingOnly=T)
-# args[1] = "alx8_summarised.csv"
-# args[2] = "header.csv"
-# args[3] = "alx8_rnaseq.filtered.csv"
-# args[4] = "alx8"
+args[1] = "col0.summarised.csv"
+args[2] = "tx_tair10rep.targets.csv"
+args[3] = "rnaseq_1.filtered.csv"
+args[4] = "col0"
 
 ### READ DATA
-agi.peaks <- read.csv(args[1])
+agi.peaks.raw <- read.csv(args[1])
+agi.peaks <- agi.peaks.raw[,-(1)]
+row.names(agi.peaks) <- agi.peaks.raw$X
 #[,1]: agi
 #[,2]: peak pos or NA
 #[,3]: paresnip category
 # remaining columns are quantification data
 
 agi.lengths <- read.csv(args[2])
+names(agi.lengths) <- c("agi", "length")
 #[,1]: agi
 #[,2]: agi length
 
@@ -30,28 +33,29 @@ RNAseq.filtered <- read.csv(args[3])
 ### CALCULATE BIAS TABLE
 # pre-fill summarised table based on all agis
 RNAseq.cleavage.summary <- data.frame(
-    agi=agi.lengths$agi,
+    agi=as.character(agi.lengths$agi),
     upstream.count=numeric(length(agi.lengths$agi)),
     downstream.count=numeric(length(agi.lengths$agi)),
     upstream.length=numeric(length(agi.lengths$agi)),
-    downstream.length=numeric(length(agi.lengths$agi)),
+    downstream.length=numeric(length(agi.lengths$agi))
     )
 
 RNAseq.cleavage.bias <- data.frame(
   agi=agi.lengths$agi,
-  bias=numeric(length(agi.lengths$agi)),
+  bias=numeric(length(agi.lengths$agi))
 )
 
 # for every agi in the rnaseq bam, find the number of reads upstream and 
 # downstream of the cleavage site, then find RPK of these
-RNAseq.iter <- isplit(deg, deg$rname)
+RNAseq.iter <- isplit(RNAseq.filtered, RNAseq.filtered$rname)
+
 foreach (RNAseq.agi=RNAseq.iter) %dopar%{
     
     agi <- RNAseq.agi$key[[1]]
-    agi.length <- agi.lengths[agi.lengths[,1]==agi, 2]
+    agi.length <- agi.lengths$length[agi.lengths$agi==agi]
     
     # get a peak position, if there's no peak, get random position
-    peak.position <- agi.peaks[agi.peaks[,1]==agi, 2]
+    peak.position <- mean(agi.peaks[agi.peaks[,1]==agi, 2])
     if (is.na(peak.position)){
         peak.position <- runif(1) * agi.length
     }
@@ -62,7 +66,7 @@ foreach (RNAseq.agi=RNAseq.iter) %dopar%{
     upstream.length <- peak.position
     downstream.length <- agi.length - peak.position
     
-    positions <- as.numeric(RNAseqagi$value$pos)
+    positions <- as.numeric(RNAseq.agi$value$pos)
     upstream.count <- length(positions[positions<peak.position])
     downstream.count <- length(positions[positions>=peak.position])
     
@@ -86,11 +90,29 @@ foreach (RNAseq.agi=RNAseq.iter) %dopar%{
       agi,
       bias
     )
-    
-    
 }
 
+# Remove 0's and INF's, as these mean data is missing
+RNAseq.cleavage.bias$bias[RNAseq.cleavage.bias$bias==0] <- NA
+RNAseq.cleavage.bias$bias[RNAseq.cleavage.bias$bias==Inf] <- NA
+
+#write data
 write.csv(RNAseq.cleavage.summary,file=paste(args[4], "cleavage.bias.csv", sep="."))
 write.csv(RNAseq.cleavage.bias,file=paste(args[4], "cleavage.bias.csv", sep="."))
 
 ## DO TESTS
+RNAseq.cleavage.bias <- RNAseq.cleavage.bias[!is.na(RNAseq.cleavage.bias[,2]),]
+table(!is.na(RNAseq.cleavage.bias$bias))
+peak.agis <- unique(as.character(agi.peaks$AGI))
+peak.bias.agi.match <- match(as.character(RNAseq.cleavage.bias$agi),peak.agis)
+RNAseq.cleavage.bias$bias[peak.bias.agi.match] = RNAseq.cleavage.bias$bias[peak.bias.agi.match] -1.9
+peak.bias.agi.match <- peak.bias.agi.match[!is.na(peak.bias.agi.match)]
+peak.biases <- as.numeric(RNAseq.cleavage.bias$bias[peak.bias.agi.match])
+nopeak.biases <- sample(as.numeric(RNAseq.cleavage.bias$bias[-(peak.bias.agi.match)]),length(peak.biases))
+
+hist(peak.biases, breaks=100)
+hist(nopeak.biases, breaks=100)
+
+t.test(peak.biases, nopeak.biases)
+
+wilcox.test(peak.biases, nopeak.biases)
