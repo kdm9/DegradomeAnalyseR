@@ -1,5 +1,5 @@
 library(doMC)
-# registerDoMC(cores=2)
+registerDoMC(cores=22)
 library(foreach)
 library(iterators)
 
