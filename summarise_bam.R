@@ -14,5 +14,5 @@ bam.counts <- ddply(
     )
 
 ## Write filtered bam to CSV
-csv_filename <- paste(args[2], "summarised.csv", sep="_")
+csv_filename <- paste(args[2], "summarised.csv", sep=".")
 write.csv(bam.counts, file=csv_filename)

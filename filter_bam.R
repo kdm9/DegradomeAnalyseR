@@ -22,7 +22,7 @@ bam <- bam[!is.na(bam[,2]),]
 # bam <- bam[bam[,3]>=20,]
 
 ## Write filtered bam to CSV
-csv_filename <- paste(args[2], "filtered.csv", sep="_")
+csv_filename <- paste(args[2], "filtered.csv", sep=".")
 write.csv(bam, file=csv_filename)
 
 
@@ -32,6 +32,6 @@ header <- scanBamHeader(args[1])
 #extract targets detail
 targets <- data.frame(header[[1]]$targets)
 
-targets_filename <- paste(args[2], "targets.csv", sep="_")
+targets_filename <- paste(args[2], "targets.csv", sep=".")
 write.csv(targets, file=targets_filename)
 

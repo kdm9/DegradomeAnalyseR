@@ -19,7 +19,6 @@ names(paresnip.filtered)[1:4] <- gsub(
 
 # remove trailing whitespace from AGIs
 paresnip.filtered$AGI <- gsub("\\s", "", paresnip.filtered$AGI)
-paresnip.summarised$AGI <- gsub("\\s", "", paresnip.summarised$AGI)
 
 
 ### SUMMARISE DATA
@@ -36,4 +35,4 @@ paresnip.summarised$SRA.sd <- apply(paresnip.summarised[,SRA.cols], 1, sd)
 paresnip.summarised$FA.sd <- apply(paresnip.summarised[,FA.cols], 1, sd)
 
 
-write.csv(paresnip.summarised, paste(args[2], "summarised.csv", sep="_"))
+write.csv(paresnip.summarised, paste(args[2], "summarised.csv", sep="."))

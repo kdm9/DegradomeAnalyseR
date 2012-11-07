@@ -1,6 +1,10 @@
 library(plyr)
 args <- commandArgs(trailingOnly=T)
-# args should be the name of each file, followed by the genotype of the files
+#args should be the name of each file, followed by the genotype of the files
+# args[1] = "paresnip_1.tab"
+# args[2] = "paresnip_2.tab"
+# args[3] = "paresnip_2.tab"
+# args[4] = "col0"
 
 cross.validate <- function (params){
   counter = 0
@@ -68,7 +72,7 @@ for (file in args[seq(1,(length(args)-1))]){
   file.list <- c(file.list, list(file.tuple))
 }
 
-fn = paste(args[length(args)], "conserved.tab", sep="_")
+fn = paste(args[length(args)], "conserved.tab", sep=".")
 conserved <- data.frame(cross.validate(file.list))
 write.table(
   conserved,
