@@ -1,3 +1,5 @@
+# DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the GPLv3 License
+
 library(Rsamtools)
 args <- commandArgs(trailingOnly=T)
 

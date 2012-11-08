@@ -1,3 +1,6 @@
+# DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the
+# GPLv3 License
+
 import re
 from sys import argv
 fh = open(argv[1])
