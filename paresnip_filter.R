@@ -21,17 +21,16 @@ cross.validate <- function (params){
 
     data.summarised <- ddply(
       data[data$Category<3,],
-      .(AGI, Cleavage.Position), #, Category
+      .(AGI, Cleavage.Position, Duplex),
       summarize,
       FA=max(Fragment.Abundance),
       SRA=max(Short.Read.Abundance),
-      Duplex=names(which.max(table(as.character(Duplex)))) #most common Duplex
     )
 
     data.summarised$Key <- paste(
       data.summarised$AGI,
       data.summarised$Cleavage.Position
-#       data.summarised$Category
+      data.summarised$Duplex
       )
 
     data.summarised <- data.summarised[with(data.summarised, order(Key)), ]
@@ -51,7 +50,7 @@ cross.validate <- function (params){
     data <- data.frame(
         summed.data[seq((iii*cols)-(cols-1),(iii*cols))]
         )
-    
+
     a = as.character(replicated.data[,length(replicated.data)])
     b = as.character(data$Key)
     matches <- match(a, b)
