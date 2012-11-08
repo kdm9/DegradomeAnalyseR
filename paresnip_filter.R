@@ -1,3 +1,6 @@
+# DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the
+# GPLv3 License
+
 library(plyr)
 args <- commandArgs(trailingOnly=T)
 #args should be the name of each file, followed by the genotype of the files

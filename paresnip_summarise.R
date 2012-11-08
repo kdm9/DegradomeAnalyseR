@@ -1,3 +1,6 @@
+# DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the
+# GPLv3 License
+
 args <- commandArgs(trailingOnly=T)
 # args[1] = "alx8_conserved.tab"
 # args[2] = "alx8"
