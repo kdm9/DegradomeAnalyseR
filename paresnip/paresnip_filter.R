@@ -29,7 +29,7 @@ cross.validate <- function (params){
       .(AGI, Cleavage.Position, Duplex),
       summarize,
       FA=max(Fragment.Abundance),
-      SRA=max(Short.Read.Abundance),
+      SRA=max(Short.Read.Abundance)
     )
 
     # Create key, this should be the lowest common denominator of the
