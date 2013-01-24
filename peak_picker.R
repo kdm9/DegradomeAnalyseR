@@ -25,7 +25,7 @@ peak.pick <- function(data){
 }
 
 peak.convert <- function (data){
-  peaks <- peak.pick(data)  
+  peaks <- peak.pick(data)
   data_nopeaks <- data
   data[peaks] = NA
   kmean <- runmean(data,15)

@@ -11,7 +11,7 @@ args <- commandArgs(trailingOnly=T)
 #mapq:	mapping quality score
 #cigar:	CIGAR indel string
 bam <- scanBam(
-    args[1], 
+    args[1],
     param=ScanBamParam(what=c("rname","pos", "mapq", "cigar"))
     )
 bam <- data.frame(bam)

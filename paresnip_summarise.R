@@ -13,12 +13,12 @@ paresnip.filtered <- read.delim(args[1], header=T, sep='\t', quote="\"")
 SRA.FA.cols <- grep("^SRA|FA",names(paresnip.filtered))
 paresnip.filtered <- paresnip.filtered[,c(1,2,3,SRA.FA.cols)]
 
-# remove trailing ".1" from general column names 
+# remove trailing ".1" from general column names
 names(paresnip.filtered)[1:4] <- gsub(
     "\\.1.*$",
     "",
     names(paresnip.filtered)[1:4]
-    )    
+    )
 
 # remove trailing whitespace from AGIs
 paresnip.filtered$AGI <- gsub("\\s", "", paresnip.filtered$AGI)
