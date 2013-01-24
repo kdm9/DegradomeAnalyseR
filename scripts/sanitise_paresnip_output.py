@@ -1,11 +1,26 @@
 # DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the
 # GPLv3 License
-
-import re
 from sys import argv
+
 fh = open(argv[1])
 this_peak = []
-print("Gene\tCategory\tCleavage Position\tP-Value\tFragment Abundance\tWeighted Fragment Abundance\tNormalised Weighted Fragment Abundance\tAlignment Score\tShort Read ID\tShort Read Abundance\tNormalised Short Read Abundance\tDuplex")
+columns = [
+        "Gene",
+        "Category",
+        "Cleavage Position",
+        "P-Value",
+        "Fragment Abundance",
+        "Weighted Fragment Abundance",
+        "Normalised Weighted Fragment Abundance",
+        "Alignment Score",
+        "Short Read ID",
+        "Short Read Abundance",
+        "Normalised Short Read Abundance",
+        "Duplex"
+        ]
+
+print "\t".join(columns)
+
 for line in fh:
     if line != "-----\n":
         line = line.strip("\n")
@@ -16,4 +31,3 @@ for line in fh:
         csv_peak += "\""
         print csv_peak
         this_peak = []
-
