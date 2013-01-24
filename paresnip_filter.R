@@ -36,7 +36,7 @@ cross.validate <- function (params){
     # collapsed data, and therefore should be unique
     data.summarised$Key <- paste(
       data.summarised$AGI,
-      data.summarised$Cleavage.Position
+      data.summarised$Cleavage.Position,
       data.summarised$Duplex
       )
 
@@ -58,7 +58,7 @@ cross.validate <- function (params){
   # replicated across the samples
   for (iii in c(1:(counter))){
     cols = 6
-    keycol = 7
+    keycol = 6
 
     # Add the first bit of the big data matrix to the replicated data matrix
     # and skip to the next iteration, if this is the first iteration of the
