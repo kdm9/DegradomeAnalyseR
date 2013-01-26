@@ -11,14 +11,16 @@ paresnip.filtered <- read.delim(args[1], header=T, sep='\t', quote="\"")
 
 # Remove duplicate columns
 SRA.FA.cols <- grep("^SRA|FA",names(paresnip.filtered))
-paresnip.filtered <- paresnip.filtered[,c(1,2,3,SRA.FA.cols)]
+# 1=AGI, 2=cleavage.position, 3=duplex
+general.cols <- c(1,2,3)
+paresnip.filtered <- paresnip.filtered[,c(general.cols,SRA.FA.cols)]
 
-# remove trailing ".1" from general column names 
-names(paresnip.filtered)[1:4] <- gsub(
+# remove trailing ".1" from general column names
+names(paresnip.filtered)[general.cols] <- gsub(
     "\\.1.*$",
     "",
-    names(paresnip.filtered)[1:4]
-    )    
+    names(paresnip.filtered)[general.cols]
+    )
 
 # remove trailing whitespace from AGIs
 paresnip.filtered$AGI <- gsub("\\s", "", paresnip.filtered$AGI)

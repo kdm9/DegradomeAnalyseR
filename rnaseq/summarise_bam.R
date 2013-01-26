@@ -11,7 +11,7 @@ bam <- read.csv(args[1])
 bam.counts <- ddply(
     bam,
     .(rname, pos),
-    summarise, 
+    summarise,
     count=length(rname),
     m_mapq=mean(mapq)
     )

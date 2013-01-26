@@ -1,10 +1,10 @@
 # DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the
 # GPLv3 License
 
-library(doMC)
-registerDoMC(cores=22)
-library(foreach)
-library(iterators)
+#library(doMC)
+#registerDoMC(cores=22)
+#library(foreach)
+#library(iterators)
 
 args <- commandArgs(trailingOnly=T)
 # args[1] = "col0.summarised.csv"
@@ -41,23 +41,23 @@ RNAseq.cleavage.summary <- data.frame(
     downstream.count=numeric(length(agi.lengths$agi)),
     upstream.length=numeric(length(agi.lengths$agi)),
     downstream.length=numeric(length(agi.lengths$agi))
-    )
+)
 
 RNAseq.cleavage.bias <- data.frame(
   agi=agi.lengths$agi,
   bias=numeric(length(agi.lengths$agi))
 )
 
-# for every agi in the rnaseq bam, find the number of reads upstream and 
+# for every agi in the rnaseq bam, find the number of reads upstream and
 # downstream of the cleavage site, then find RPK of these
-RNAseq.iter <- isplit(RNAseq.filtered, RNAseq.filtered$rname)
+agi.list <- RNAseq.cleavage.bias$agi
 
-foreach (RNAseq.agi=RNAseq.iter) %dopar%{
-    
-    agi <- RNAseq.agi$key[[1]]
+for(agi in agi.list) {
+
     agi.length <- agi.lengths$length[agi.lengths$agi==agi]
-    
+
     # get a peak position, if there's no peak, get random position
+    # If many peaks, get the mean of them
     peak.position <- mean(agi.peaks[agi.peaks[,1]==agi, 2])
     if (is.na(peak.position)){
         peak.position <- runif(1) * agi.length
@@ -65,14 +65,14 @@ foreach (RNAseq.agi=RNAseq.iter) %dopar%{
     if (is.na(peak.position)){
         next
     }
-    
+
     upstream.length <- peak.position
     downstream.length <- agi.length - peak.position
-    
-    positions <- as.numeric(RNAseq.agi$value$pos)
+
+    positions <- as.numeric(RNAseq.filtered[as.character(RNAseq.filtered[,2])==agi,3])
     upstream.count <- length(positions[positions<peak.position])
     downstream.count <- length(positions[positions>=peak.position])
-    
+
     # Fill RNAseq cleavage summary table
     RNAseq.cleavage.summary[RNAseq.cleavage.summary[,1]==agi,] <- c(
         agi,
@@ -81,18 +81,19 @@ foreach (RNAseq.agi=RNAseq.iter) %dopar%{
         upstream.length,
         downstream.length
         )
-    
+
     # calculate bias
     upstream.RPK <- upstream.count / (upstream.length / 1000)
     downstream.RPK <- downstream.count / (downstream.length / 1000)
-    
+
     bias <- downstream.RPK / upstream.RPK
-    
+
     # Fill RNAseq cleavage bias table
     RNAseq.cleavage.bias[RNAseq.cleavage.bias[,1]==agi,] <- c(
       agi,
       bias
     )
+    print(RNAseq.cleavage.bias[RNAseq.cleavage.bias[,1]==agi,])
 }
 
 # Remove 0's and INF's, as these mean data is missing
@@ -108,7 +109,6 @@ RNAseq.cleavage.bias <- RNAseq.cleavage.bias[!is.na(RNAseq.cleavage.bias[,2]),]
 table(!is.na(RNAseq.cleavage.bias$bias))
 peak.agis <- unique(as.character(agi.peaks$AGI))
 peak.bias.agi.match <- match(as.character(RNAseq.cleavage.bias$agi),peak.agis)
-RNAseq.cleavage.bias$bias[peak.bias.agi.match] = RNAseq.cleavage.bias$bias[peak.bias.agi.match] -1.9
 peak.bias.agi.match <- peak.bias.agi.match[!is.na(peak.bias.agi.match)]
 peak.biases <- as.numeric(RNAseq.cleavage.bias$bias[peak.bias.agi.match])
 nopeak.biases <- sample(as.numeric(RNAseq.cleavage.bias$bias[-(peak.bias.agi.match)]),length(peak.biases))
