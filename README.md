@@ -1,7 +1,8 @@
 README:
 =======
 
-DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the GPLv3 License
+DegradomeAnalyseR is copyright 2012 Kevin Murray, and is licensed under the GPLv3 License.  
+
 See http://www.gnu.org/licenses/gpl-3.0.txt for the full license text
 
 
@@ -14,6 +15,7 @@ These scripts are used in a bash pipeline, e.g.:
     - paresnip/paresnip_summarise.R --args <conserved_peaks_table> <prefix>
     - rnaseq/paresnip_downstream_bias.R --args <summarised_peaks_table> <target_length_table> <RNAseq_filtered_file> <prefix>
     - rnaseq/filter_bam.R --args <bam_file> <prefix>
+
 
 File pipeline:
 ==============
@@ -35,5 +37,3 @@ RNAseq:
     - Align to reference genome
     - If required, "samtools view -bS" to convert sam to bam
     - filter_bam.R generates target and alignment databases
-
-
